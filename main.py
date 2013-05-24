@@ -56,6 +56,22 @@ class Cigarette():
         screen.blit(self.whitePart, (200,200))
         screen.blit(self.filterLine, (230, 200))
 
+class Arm(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        #self.mainPart = pygame.Surface((10, 200))
+        #self.mainPart.fill((214, 134, 21))
+        #self.mainPart.convert()
+        self.image, self.rect = load_image('arm.bmp', -1)
+        self.cig = Cigarette()
+
+    def update(self, screen):
+        #screen.blit(self.mainPart, (200,200))
+        self.cig.update(screen)
+
+    def rotate(self, amount):
+        self.mainPart = pygame.transform.rotate(self.mainPart, amount)
+
 def main():
     
     #Initialize Everything
@@ -75,7 +91,8 @@ def main():
 
     #Prepare Game Objects
     clock = pygame.time.Clock()
-    cig = Cigarette()
+    #cig = Cigarette()
+    arm = Arm()
 
     going = True
     while going:
@@ -86,9 +103,13 @@ def main():
                 pygame.quit()
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 pygame.quit()
+            elif event.type == KEYDOWN and event.key == K_RIGHT:
+                arm.rotate(45)
+            elif event.type == KEYDOWN and event.key == K_LEFT:
+                arm.rotate(-90)
 
         screen.blit(background, (0,0))
-        cig.update(screen)
+        arm.update(screen)
         pygame.display.flip()
 
 if __name__ == '__main__':
